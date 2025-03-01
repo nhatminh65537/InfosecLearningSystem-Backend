@@ -2,6 +2,7 @@ using InfosecLearningSystem_Backend.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using InfosecLearningSystem_Backend.Infrastructure.Configurations;
 using InfosecLearningSystem_Backend.Infrastructure.SeedData;
+using Microsoft.AspNetCore.Identity;
 
 namespace InfosecLearningSystem_Backend.Infrastructure
 {
@@ -67,6 +68,50 @@ namespace InfosecLearningSystem_Backend.Infrastructure
             modelBuilder.ApplyConfiguration(new LifecycleStateSeedData());
             modelBuilder.ApplyConfiguration(new ProgressStateSeedData());
             modelBuilder.ApplyConfiguration(new LessonTypeSeedData());
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder
+                       .UseSeeding(
+                            (context, _) =>
+                            {
+                                var first = context.Set<User>().FirstOrDefault();
+                                if (first == null)
+                                { 
+                                    var newUser = new User
+                                    {
+                                        Id = 1,
+                                        UserName = "admin",
+                                        Email = "admin@example.com"
+                                    };
+                                    newUser.PasswordHash = new PasswordHasher<User>().HashPassword(newUser, "admin");
+                                    context.Set<User>().Add(newUser);
+                                    context.Set<UserRole>().Add(new UserRole { UserId = newUser.Id, RoleName = "Admin" });
+
+                                    context.SaveChanges();
+                                }
+                            })
+                       .UseAsyncSeeding(
+                            async (context, _, cancellationToken) =>
+                            {
+                            var first = await context.Set<User>().FirstOrDefaultAsync(cancellationToken);
+                            if (first == null)
+                            {
+                                var newUser = new User
+                                {
+                                    Id = 1,
+                                    UserName = "admin",
+                                    Email = "admin@example.com"
+                                };
+                                newUser.PasswordHash = new PasswordHasher<User>().HashPassword(newUser, "admin");
+                                context.Set<User>().Add(newUser);
+                                context.Set<UserRole>().Add(new UserRole { UserId = newUser.Id, RoleName = "Admin" });
+
+                                await context.SaveChangesAsync(cancellationToken);
+                                }
+                            })
+                       .UseSnakeCaseNamingConvention();
         }
     }
 }
