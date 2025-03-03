@@ -2,6 +2,9 @@ using InfosecLearningSystem_Backend.Test;
 using InfosecLearningSystem_Backend.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using InfosecLearningSystem_Backend.Common.Extensions;
+using InfosecLearningSystem_Backend.Domain.MappingProfiles;
+using InfosecLearningSystem_Backend.Domain.Models;
+using InfosecLearningSystem_Backend.Domain.DTOs;
 
 namespace InfosecLearningSystem_Backend
 {
@@ -12,19 +15,22 @@ namespace InfosecLearningSystem_Backend
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection"),
+                      o => o.SetPostgresVersion(new Version(17, 4))));
 
-            builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+            builder.Services.AddScoped<DbContext, AppDbContext>();
 
             builder.Services.AddRepositories();
 
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             builder.Services.AddServices();
 
-            builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection"),
-                                  o => o.SetPostgresVersion(new Version(17, 4))));
-            
+            builder.Services.AddOpenApi();
+
+            builder.Services.AddControllers();
+
 
             var app = builder.Build();
 
@@ -36,10 +42,11 @@ namespace InfosecLearningSystem_Backend
                 PreTest(app.Configuration);
             }
 
+            //app.UseExceptionHandler();
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

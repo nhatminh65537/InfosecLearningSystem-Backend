@@ -83,10 +83,10 @@ namespace InfosecLearningSystem_Backend.Infrastructure.Migrations
                 RETURNS TRIGGER AS $$
                 BEGIN
                     UPDATE modules
-                    SET xp = (SELECT SUM(xp) FROM lessons WHERE module_id = NEW.module_id),
-                        duration = (SELECT SUM(duration) FROM lessons WHERE module_id = NEW.module_id),
+                    SET xp = (SELECT COALESCE(SUM(xp), 0) FROM lessons WHERE content_item_id IN (SELECT id FROM content_items WHERE module_id = NEW.module_id)),
+                        duration = (SELECT COALESCE(SUM(duration), 0) FROM lessons WHERE content_item_id IN (SELECT id FROM content_items WHERE module_id = NEW.module_id)),
                         updated_at = NOW()
-                    WHERE id = NEW.module_id;
+                    WHERE id = (SELECT module_id FROM content_items WHERE id = NEW.content_item_id);
                     RETURN NEW;
                 END;
                 $$ LANGUAGE plpgsql;

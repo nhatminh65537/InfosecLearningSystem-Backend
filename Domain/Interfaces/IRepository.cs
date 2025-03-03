@@ -14,5 +14,6 @@
         void Add(T entity);
         void Delete(int id);
         void Update(T entity);
+        void Save();
     }
 }

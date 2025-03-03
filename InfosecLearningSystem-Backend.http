@@ -1,6 +1,5 @@
-@InfosecLearningSystem_Backend_HostAddress = http://localhost:5081
+@InfosecLearningSystem-Backend_HostAddress = https://localhost:7185
 
-GET {{InfosecLearningSystem_Backend_HostAddress}}/weatherforecast/
-Accept: application/json
+GET {{InfosecLearningSystem-Backend_HostAddress}}/api/v1/category
 
 ###
