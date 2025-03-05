@@ -23,14 +23,14 @@ namespace InfosecLearningSystem_Backend.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public virtual async Task<IActionResult> GetById(int id)
         {
             var entity = await _dataService.GetByIdAsync(id);
             return Ok(entity);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] TModel entity)
+        public virtual async Task<IActionResult> Create([FromBody] TModel entity)
         {
             if (!ModelState.IsValid)
             {
@@ -42,7 +42,7 @@ namespace InfosecLearningSystem_Backend.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] TModel entity)
+        public virtual async Task<IActionResult> Update(int id, [FromBody] TModel entity)
         {
             if (!ModelState.IsValid)
             {
@@ -59,7 +59,7 @@ namespace InfosecLearningSystem_Backend.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public virtual async Task<IActionResult> Delete(int id)
         {
             await _dataService.DeleteAsync(id);
             return NoContent();

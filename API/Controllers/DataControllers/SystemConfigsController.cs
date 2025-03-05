@@ -7,9 +7,9 @@ namespace InfosecLearningSystem_Backend.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class UserController : DataController<UserDTO>
+    public class SystemConfigsController : DataController<SystemConfigDTO>
     {
-        public UserController(IDataService<UserDTO> serviceProvider) 
+        public SystemConfigsController(IDataService<SystemConfigDTO> serviceProvider) 
             : base(serviceProvider)
         {
         }

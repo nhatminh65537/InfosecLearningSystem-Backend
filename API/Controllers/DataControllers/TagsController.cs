@@ -7,9 +7,9 @@ namespace InfosecLearningSystem_Backend.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class PermissionController : DataController<PermissionDTO>
+    public class TagsController : DataController<TagDTO>
     {
-        public PermissionController(IDataService<PermissionDTO> serviceProvider) 
+        public TagsController(IDataService<TagDTO> serviceProvider) 
             : base(serviceProvider)
         {
         }

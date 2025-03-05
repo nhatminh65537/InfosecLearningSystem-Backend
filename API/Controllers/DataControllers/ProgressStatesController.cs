@@ -7,9 +7,9 @@ namespace InfosecLearningSystem_Backend.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class LifecycleStateController : DataController<LifecycleStateDTO>
+    public class ProgressStatesController : DataController<ProgressStateDTO>
     {
-        public LifecycleStateController(IDataService<LifecycleStateDTO> serviceProvider) 
+        public ProgressStatesController(IDataService<ProgressStateDTO> serviceProvider) 
             : base(serviceProvider)
         {
         }

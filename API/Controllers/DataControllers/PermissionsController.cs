@@ -7,9 +7,9 @@ namespace InfosecLearningSystem_Backend.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class ProgressStateController : DataController<ProgressStateDTO>
+    public class PermissionsController : DataController<PermissionDTO>
     {
-        public ProgressStateController(IDataService<ProgressStateDTO> serviceProvider) 
+        public PermissionsController(IDataService<PermissionDTO> serviceProvider) 
             : base(serviceProvider)
         {
         }
