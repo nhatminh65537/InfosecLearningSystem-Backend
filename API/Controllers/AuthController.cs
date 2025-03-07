@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using InfosecLearningSystem_Backend.Domain.DTOs;
+using InfosecLearningSystem_Backend.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
 [Route("api/v1/auth")]
@@ -18,8 +20,6 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
-
         try
         {
             var response = await _authService.LoginAsync(request);
@@ -37,8 +37,6 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
-
         try
         {
             var result = await _authService.RegisterAsync(request);
@@ -54,29 +52,29 @@ public class AuthController : ControllerBase
     /// <summary>
     /// Refresh JWT access token using refresh token.
     /// </summary>
-    [HttpPost("refresh")]
-    public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
-    {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
+    //[HttpPost("refresh")]
+    //public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
+    //{
+    //    if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        try
-        {
-            var response = await _authService.RefreshTokenAsync(request);
-            return response != null ? Ok(response) : Unauthorized(new { message = "Invalid refresh token" });
-        }
-        catch (Exception ex)
-        {
-            return Problem(ex.Message, statusCode: 500);
-        }
-    }
+    //    try
+    //    {
+    //        var response = await _authService.RefreshTokenAsync(request);
+    //        return response != null ? Ok(response) : Unauthorized(new { message = "Invalid refresh token" });
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        return Problem(ex.Message, statusCode: 500);
+    //    }
+    //}
 
     /// <summary>
     /// Logout user and invalidate refresh token.
     /// </summary>
+    [Authorize]
     [HttpPost("logout")]
-    public async Task<IActionResult> Logout([FromBody] LogoutRequest request)
+    public async Task<IActionResult> Logout()
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
 
         try
         {
@@ -92,55 +90,54 @@ public class AuthController : ControllerBase
     /// <summary>
     /// Verify user's email.
     /// </summary>
-    [HttpPost("verify-email")]
-    public async Task<IActionResult> VerifyEmail([FromBody] EmailVerificationRequest request)
-    {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
+    //[HttpPost("verify-email")]
+    //public async Task<IActionResult> VerifyEmail([FromBody] EmailVerificationRequest request)
+    //{
+    //    if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        try
-        {
-            var result = await _authService.VerifyEmailAsync(request.Token);
-            return result ? Ok(new { message = "Email verified successfully" })
-                          : BadRequest(new { message = "Invalid or expired token" });
-        }
-        catch (Exception ex)
-        {
-            return Problem(ex.Message, statusCode: 500);
-        }
-    }
+    //    try
+    //    {
+    //        var result = await _authService.VerifyEmailAsync(request.Token);
+    //        return result ? Ok(new { message = "Email verified successfully" })
+    //                      : BadRequest(new { message = "Invalid or expired token" });
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        return Problem(ex.Message, statusCode: 500);
+    //    }
+    //}
 
     /// <summary>
     /// Send password reset email.
     /// </summary>
-    [HttpPost("forgot-password")]
-    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
-    {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
+    //[HttpPost("forgot-password")]
+    //public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
+    //{
+    //    if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        try
-        {
-            await _authService.SendPasswordResetEmailAsync(request.Email);
-            return Ok(new { message = "Password reset email sent." });
-        }
-        catch (Exception ex)
-        {
-            return Problem(ex.Message, statusCode: 500);
-        }
-    }
+    //    try
+    //    {
+    //        await _authService.SendPasswordResetEmailAsync(request.Email);
+    //        return Ok(new { message = "Password reset email sent." });
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        return Problem(ex.Message, statusCode: 500);
+    //    }
+    //}
 
     /// <summary>
     /// Reset password using token.
     /// </summary>
-    [HttpPost("reset-password")]
+    [HttpPost("resetpasswd")]
+    [Authorize]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
-
         try
         {
             var result = await _authService.ResetPasswordAsync(request);
             return result ? Ok(new { message = "Password has been reset" })
-                          : BadRequest(new { message = "Invalid token or password" });
+                          : BadRequest(new { message = "Invalid Password" });
         }
         catch (Exception ex)
         {

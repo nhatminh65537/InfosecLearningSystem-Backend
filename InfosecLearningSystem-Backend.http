@@ -1,5 +1,5 @@
 @InfosecLearningSystem-Backend_HostAddress = https://localhost:7185
 
-GET {{InfosecLearningSystem-Backend_HostAddress}}/api/v1/category
+GET {{InfosecLearningSystem-Backend_HostAddress}}/api/v1/categories
 
 ###

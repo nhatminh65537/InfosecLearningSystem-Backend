@@ -1,5 +1,5 @@
 using InfosecLearningSystem_Backend.Domain.MappingProfiles;
-using InfosecLearningSystem_Backend.Services.Interfaces;
+using InfosecLearningSystem_Backend.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;

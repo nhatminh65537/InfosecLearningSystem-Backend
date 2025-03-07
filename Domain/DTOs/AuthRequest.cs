@@ -6,8 +6,7 @@ namespace InfosecLearningSystem_Backend.Domain.DTOs
     public class LoginRequest
     {
         [Required]
-        [EmailAddress]
-        public string Email { get; set; } = null!;
+        public string UserName { get; set; } = null!;
 
         [Required]
         public string Password { get; set; } = null!;
@@ -16,7 +15,7 @@ namespace InfosecLearningSystem_Backend.Domain.DTOs
     public class RegisterRequest
     {
         [Required]
-        public string FullName { get; set; } = null!;
+        public string UserName { get; set; } = null!;
 
         [Required]
         [EmailAddress]
@@ -55,7 +54,7 @@ namespace InfosecLearningSystem_Backend.Domain.DTOs
     public class ResetPasswordRequest
     {
         [Required]
-        public string Token { get; set; } = null!;
+        public string OldPassword { get; set; } = null!;
 
         [Required]
         [MinLength(6)]

@@ -1,9 +1,10 @@
+using InfosecLearningSystem_Backend.Application.Interfaces;
 using InfosecLearningSystem_Backend.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace InfosecLearningSystem_Backend.Services
+namespace InfosecLearningSystem_Backend.Application.Services
 {
-    public class PasswordService
+    public class PasswordService : IPasswordService
     {
         private readonly IPasswordHasher<User> _passwordHasher;
 

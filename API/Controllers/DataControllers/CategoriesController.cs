@@ -1,7 +1,7 @@
 ﻿using InfosecLearningSystem_Backend.Controllers;
 using InfosecLearningSystem_Backend.Domain.DTOs;
 using InfosecLearningSystem_Backend.Domain.Models;
-using InfosecLearningSystem_Backend.Services.Interfaces;
+using InfosecLearningSystem_Backend.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InfosecLearningSystem_Backend.API.Controllers

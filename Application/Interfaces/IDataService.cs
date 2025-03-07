@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace InfosecLearningSystem_Backend.Services.Interfaces
+namespace InfosecLearningSystem_Backend.Application.Interfaces
 {
     public interface IDataService<TDTO> where TDTO : class
     {

@@ -5,6 +5,7 @@ using InfosecLearningSystem_Backend.Common.Extensions;
 using InfosecLearningSystem_Backend.Domain.MappingProfiles;
 using InfosecLearningSystem_Backend.Domain.Models;
 using InfosecLearningSystem_Backend.Domain.DTOs;
+using Microsoft.IdentityModel.Logging;
 
 namespace InfosecLearningSystem_Backend
 {
@@ -12,6 +13,7 @@ namespace InfosecLearningSystem_Backend
     {
         public static void Main(string[] args)
         {
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -31,6 +33,14 @@ namespace InfosecLearningSystem_Backend
 
             builder.Services.AddControllers();
 
+            builder.Services.AddJWTAuthentication(builder.Configuration);
+
+            builder.Services.AddAuthorizationPolicies();
+
+            builder.Services.AddDistributedMemoryCache();
+
+            builder.Services.AddHttpContextAccessor();
+
 
             var app = builder.Build();
 
@@ -45,6 +55,8 @@ namespace InfosecLearningSystem_Backend
             //app.UseExceptionHandler();
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

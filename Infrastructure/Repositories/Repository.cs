@@ -1,5 +1,6 @@
 ﻿using InfosecLearningSystem_Backend.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace InfosecLearningSystem_Backend.Infrastructure.Repositories
 {
@@ -27,6 +28,19 @@ namespace InfosecLearningSystem_Backend.Infrastructure.Repositories
             }
         }
 
+        public async Task<IEnumerable<T>> GetWhereAsync(Expression<Func<T, bool>> expression)
+        {
+            try
+            {
+                return await _dbSet.Where(expression).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log exception
+                throw new Exception("Could not retrieve entities", ex);
+            }
+        }
+
         public async Task<T?> GetByIdAsync(int id)
         {
             try
@@ -37,6 +51,19 @@ namespace InfosecLearningSystem_Backend.Infrastructure.Repositories
             {
                 // Log exception
                 throw new Exception($"Could not retrieve entity with id {id}", ex);
+            }
+        }
+
+        public async Task<T?> GetFirstWhereAsync(Expression<Func<T, bool>> expression)
+        {
+            try
+            {
+                return await _dbSet.FirstOrDefaultAsync(expression);
+            }
+            catch (Exception ex)
+            {
+                // Log exception
+                throw new Exception("Could not retrieve entity", ex);
             }
         }
 
@@ -86,6 +113,20 @@ namespace InfosecLearningSystem_Backend.Infrastructure.Repositories
             }
         }
 
+        public async Task DeleteWhereAsync(Expression<Func<T, bool>> expression)
+        {
+            try
+            {
+                var entities = await _dbSet.Where(expression).ToListAsync();
+                _dbSet.RemoveRange(entities);
+            }
+            catch (Exception ex)
+            {
+                // Log exception
+                throw new Exception("Could not delete entities", ex);
+            }
+        }
+
         public async Task SaveAsync()
         {
             try
@@ -112,6 +153,19 @@ namespace InfosecLearningSystem_Backend.Infrastructure.Repositories
             }
         }
 
+        public IEnumerable<T> GetWhere(Expression<Func<T, bool>> expression)
+        {
+            try
+            {
+                return _dbSet.Where(expression).ToList();
+            }
+            catch (Exception ex)
+            {
+                // Log exception
+                throw new Exception("Could not retrieve entities", ex);
+            }
+        }
+
         public T? GetById(int id)
         {
             try
@@ -122,6 +176,19 @@ namespace InfosecLearningSystem_Backend.Infrastructure.Repositories
             {
                 // Log exception
                 throw new Exception($"Could not retrieve entity with id {id}", ex);
+            }
+        }
+
+        public T? GetFirstWhere(Expression<Func<T, bool>> expression)
+        {
+            try
+            {
+                return _dbSet.FirstOrDefault(expression);
+            }
+            catch (Exception ex)
+            {
+                // Log exception
+                throw new Exception("Could not retrieve entity", ex);
             }
         }
 
@@ -137,6 +204,7 @@ namespace InfosecLearningSystem_Backend.Infrastructure.Repositories
                 throw new Exception("Could not add entity", ex);
             }
         }
+        
         public void Update(T entity)
         {
             try
@@ -150,6 +218,7 @@ namespace InfosecLearningSystem_Backend.Infrastructure.Repositories
                 throw new Exception("Could not update entity", ex);
             }
         }
+        
         public void Delete(int id)
         {
             try
@@ -167,6 +236,21 @@ namespace InfosecLearningSystem_Backend.Infrastructure.Repositories
                 throw new Exception($"Could not delete entity with id {id}", ex);
             }
         }
+
+        public void DeleteWhere(Expression<Func<T, bool>> predicate)
+        {
+            try
+            {
+                var entities = _dbSet.Where(predicate).ToList();
+                _dbSet.RemoveRange(entities);
+            }
+            catch (Exception ex)
+            {
+                // Log exception
+                throw new Exception("Could not delete entities", ex);
+            }
+        }
+
         public void Save()
         {
             try

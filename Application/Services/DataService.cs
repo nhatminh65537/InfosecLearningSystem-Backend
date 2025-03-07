@@ -1,18 +1,18 @@
 using InfosecLearningSystem_Backend.Domain.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using InfosecLearningSystem_Backend.Services.Interfaces;
+using InfosecLearningSystem_Backend.Application.Interfaces;
 using AutoMapper;
 using InfosecLearningSystem_Backend.Domain.MappingProfiles;
 
-namespace InfosecLearningSystem_Backend.Services
+namespace InfosecLearningSystem_Backend.Application.Services
 {
     public class DataService<TModel, TDTO> : IDataService<TDTO> 
         where TDTO : class
         where TModel : class
     {
-        private readonly IRepository<TModel> _repository;
-        private readonly IMapper _mapper;
+        protected readonly IRepository<TModel> _repository;
+        protected readonly IMapper _mapper;
 
         public DataService(IRepository<TModel> repository, IMapper mapper)
         {
